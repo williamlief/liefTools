@@ -21,8 +21,8 @@
 #' @param complete_obs (optional) require units to be observed in all time
 #' periods? default is true.
 #'
-#' @example
-#' balance_panel(airquality, unit=Month, time=Day)
+#' @examples
+#'  balance_panel(df = airquality, unit = Month, time = Day)
 #'
 #' @return input tibble filtered to balanced panel
 #' @export

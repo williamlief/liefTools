@@ -38,3 +38,7 @@ observations before the start and stop times will be dropped.
 Set `complete_obs = FALSE` to keep units that are missing some time
 observations during the panel.
 }
+\examples{
+ balance_panel(df = airquality, unit = Month, time = Day)
+
+}

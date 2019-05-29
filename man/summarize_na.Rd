@@ -4,7 +4,7 @@
 \alias{summarize_na}
 \title{Summary of NA by variable}
 \usage{
-missing_summary(diamonds)
+summarize_na(df, group = NULL)
 }
 \arguments{
 \item{df}{: a tibble}
@@ -19,6 +19,6 @@ a tibble with one row per variable in original datset, values are pct na.
 reports percent of missing data for all variables in data frame
 }
 \examples{
- missing_summary(diamonds)
- missing_summary(diamonds, color)
+ summarize_na(df = airquality)
+ summarize_na(df = airquality, group = Month)
 }

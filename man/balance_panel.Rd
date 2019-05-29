@@ -5,7 +5,7 @@
 \title{balance a time series panel}
 \usage{
 balance_panel(df, unit = unit, time = time, start = NULL,
-  stop = NULL, complete.obs = TRUE)
+  stop = NULL, complete_obs = TRUE)
 }
 \arguments{
 \item{df}{a tibble}
@@ -14,10 +14,10 @@ balance_panel(df, unit = unit, time = time, start = NULL,
 
 \item{time}{(optional) the time variable, default is time}
 
-\item{panel_start}{(optional) the first year in the panel (int), default is
+\item{start}{(optional) the first year in the panel (int), default is
 minimum observed}
 
-\item{panel_stop}{(optional) the last year in the panel (int), default is the
+\item{stop}{(optional) the last year in the panel (int), default is the
 maximum observed}
 
 \item{complete_obs}{(optional) require units to be observed in all time

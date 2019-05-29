@@ -5,7 +5,12 @@ Version: 0.1.0
 Author: Lief Esbenshade
 Maintainer: Lief Esbenshade <williamlief@gmail.com>
 Description: Various and sundry helper functions that I use.
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
+Imports: 
+    dplyr,
+    rlang,
+    tidyr,
+    magrittr

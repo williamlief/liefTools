@@ -2,7 +2,6 @@
 #'
 #' @name summarize_na
 #' @description reports percent of missing data for all variables in data frame
-#' @usage missing_summary(diamonds)
 #'
 #' @param df : a tibble
 #' @param group : optional single grouping variable. If used, pct missing by
@@ -12,29 +11,30 @@
 #' @export
 #'
 #' @examples
-#'  missing_summary(diamonds)
-#'  missing_summary(diamonds, color)
+#'  summarize_na(df = airquality)
+#'  summarize_na(df = airquality, group = Month)
 summarize_na <- function(df, group = NULL) {
 
-  if(rlang::quo_is_null(enquo(group))) {
+  if(rlang::quo_is_null(rlang::enquo(group))) {
     miss <- df %>%
-      summarize_all(list(~mean(is.na(.)))) %>%
-      gather(key = "var", value = "pct_na")
+      dplyr::summarize_all(list(~mean(is.na(.)))) %>%
+      tidyr::gather(key = "var", value = "pct_na")
 
     return(miss)
   }
 
-  group <- enquo(group)
+  group <- rlang::enquo(group)
   var <- rlang::as_name(group)
   if (!(var %in% colnames(df))) {
     stop(paste0("variable ", var, " not found"))
   }
 
   miss <- df %>%
-    group_by(!!group) %>%
-    summarize_all(list(~mean(is.na(.)))) %>%
-    gather(key = "var", value = "pct_na", -!!group) %>%
-    spread(key = !!group, value = pct_na)
+    dplyr::group_by(!!group) %>%
+    dplyr::summarize_all(list(~mean(is.na(.)))) %>%
+    tidyr::gather(key = "var", value = "pct_na", -!!group) %>%
+    tidyr::spread(key = !!group, value = pct_na)
 
   return(miss)
 }
+utils::globalVariables(c("pct_na"))

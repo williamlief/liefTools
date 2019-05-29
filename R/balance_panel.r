@@ -14,21 +14,24 @@
 #' @param df a tibble
 #' @param unit (optional) the unit variable, default is unit
 #' @param time (optional) the time variable, default is time
-#' @param panel_start (optional) the first year in the panel (int), default is
+#' @param start (optional) the first year in the panel (int), default is
 #' minimum observed
-#' @param panel_stop (optional) the last year in the panel (int), default is the
+#' @param stop (optional) the last year in the panel (int), default is the
 #'  maximum observed
 #' @param complete_obs (optional) require units to be observed in all time
 #' periods? default is true.
+#'
+#' @example
+#' balance_panel(airquality, unit=Month, time=Day)
 #'
 #' @return input tibble filtered to balanced panel
 #' @export
 
 balance_panel <- function(df, unit=unit, time=time,
-                          start=NULL, stop=NULL, complete.obs = TRUE) {
+                          start=NULL, stop=NULL, complete_obs = TRUE) {
 
-  unit  <- enquo(unit)
-  time <- enquo(time)
+  unit  <- rlang::enquo(unit)
+  time <- rlang::enquo(time)
 
   vars <- c(rlang::as_name(unit), rlang::as_name(time))
   for (var in vars) {
@@ -37,15 +40,15 @@ balance_panel <- function(df, unit=unit, time=time,
     }
   }
 
-  if (is.null(start)) { start <- min(pull(df, !!time)) }
-  if (is.null(stop))  { stop  <- max(pull(df, !!time)) }
+  if (is.null(start)) { start <- min(dplyr::pull(df, !!time)) }
+  if (is.null(stop))  { stop  <- max(dplyr::pull(df, !!time)) }
 
   balance <- df %>%
-    group_by(!!unit) %>%
-    filter(!!time >= !!start,
-           !!time <= !!stop) %>%
-    {if(complete.obs == TRUE) filter(., n() == !!stop - !!start + 1) else . } %>%
-    ungroup()
+    dplyr::group_by(!!unit) %>%
+    dplyr::filter(!!time >= !!start,
+                  !!time <= !!stop) %>%
+                  {if(complete_obs == TRUE) dplyr::filter(., dplyr::n() == !!stop - !!start + 1) else . } %>%
+    dplyr::ungroup()
 
   return(balance)
 }

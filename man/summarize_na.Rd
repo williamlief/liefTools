@@ -4,13 +4,16 @@
 \alias{summarize_na}
 \title{Summary of NA by variable}
 \usage{
-summarize_na(df, group = NULL)
+summarize_na(df, group = NULL, round = NULL)
 }
 \arguments{
-\item{df}{: a tibble}
+\item{df}{a tibble}
 
-\item{group}{: optional single grouping variable. If used, pct missing by
+\item{group}{(optional) single grouping variable. If used, pct missing by
 group will be spread across columns.}
+
+\item{round}{(optional) specify number of digits to round na pcts to. Default is
+no rounding.}
 }
 \value{
 a tibble with one row per variable in original datset, values are pct na.
@@ -21,4 +24,5 @@ reports percent of missing data for all variables in data frame
 \examples{
  summarize_na(df = airquality)
  summarize_na(df = airquality, group = Month)
+ summarize_na(df = airquality, group = Month, round = 3)
 }

@@ -33,12 +33,7 @@ balance_panel <- function(df, unit=unit, time=time,
   unit  <- rlang::enquo(unit)
   time <- rlang::enquo(time)
 
-  vars <- c(rlang::as_name(unit), rlang::as_name(time))
-  for (var in vars) {
-    if (!(var %in% colnames(df))) {
-      stop(paste0("variable ", var, " not found"))
-    }
-  }
+  check_vars_exist(df, !!unit, !!time)
 
   if (is.null(start)) { start <- min(dplyr::pull(df, !!time)) }
   if (is.null(stop))  { stop  <- max(dplyr::pull(df, !!time)) }

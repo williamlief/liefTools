@@ -27,10 +27,7 @@ summarize_na <- function(df, group = NULL, round = NULL) {
   } else {
 
     group <- rlang::enquo(group)
-    var <- rlang::as_name(group)
-    if (!(var %in% colnames(df))) {
-      stop(paste0("variable ", var, " not found"))
-    }
+    check_vars_exist(df, !!group)
 
     miss <- df %>%
       dplyr::group_by(!!group) %>%

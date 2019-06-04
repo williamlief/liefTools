@@ -3,5 +3,6 @@
 export("%>%")
 export(balance_panel)
 export(check_vars_exist)
+export(summarize_mean)
 export(summarize_na)
 importFrom(magrittr,"%>%")

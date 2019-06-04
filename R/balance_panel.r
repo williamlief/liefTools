@@ -33,7 +33,7 @@ balance_panel <- function(df, unit=unit, time=time,
   unit  <- rlang::enquo(unit)
   time <- rlang::enquo(time)
 
-  check_vars_exist(df, !!unit, !!time)
+  liefTools::check_vars_exist(df, !!unit, !!time)
 
   if (is.null(start)) { start <- min(dplyr::pull(df, !!time)) }
   if (is.null(stop))  { stop  <- max(dplyr::pull(df, !!time)) }

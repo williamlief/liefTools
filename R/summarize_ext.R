@@ -53,7 +53,8 @@ summarize_na <- function(df, group = NULL, round = NULL) {
 #' Summary of mean by variable
 #'
 #' @name summarize_mean
-#' @description reports mean value for all numeric variables in a data frame
+#' @description reports mean value for all numeric and logical variables in a
+#' data frame
 #'
 #' @param df a tibble
 #' @param group (optional) single grouping variable. If used, mean by
@@ -76,7 +77,8 @@ summarize_mean <- function(df, group = NULL, round = NULL, na.rm = TRUE) {
   if(rlang::quo_is_null(rlang::enquo(group))) {
 
     mean <- df %>%
-      dplyr::summarize_if(is.numeric, list(~mean(., na.rm = na.rm))) %>%
+      dplyr::summarize_if(function(col) {is.numeric(col) | is.logical(col)},
+                          list(~mean(., na.rm = na.rm))) %>%
       tidyr::gather(key = "var", value = "mean")
 
   } else {
@@ -86,7 +88,8 @@ summarize_mean <- function(df, group = NULL, round = NULL, na.rm = TRUE) {
 
     mean <- df %>%
       dplyr::group_by(!!group) %>%
-      dplyr::summarize_if(is.numeric, list(~mean(., na.rm = na.rm))) %>%
+      dplyr::summarize_if(function(col) {is.numeric(col) | is.logical(col)},
+                          list(~mean(., na.rm = na.rm))) %>%
       tidyr::gather(key = "var", value = "mean", -!!group) %>%
       tidyr::spread(key = !!group, value = mean)
 

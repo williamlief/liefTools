@@ -22,7 +22,8 @@ stripped before the computation proceeds. Unlike base, here I default to TRUE}
 a tibble with one row per variable in original datset, values are mean
 }
 \description{
-reports mean value for all numeric variables in a data frame
+reports mean value for all numeric and logical variables in a
+data frame
 }
 \examples{
  summarize_mean(df = airquality)

@@ -8,8 +8,7 @@
 #'
 #' @param tbl tbl of data
 #' @param group grouping variable
-#' @param ...
-#'  @inheritParams dplyr::sample_frac
+#' @inheritDotParams dplyr::sample_frac size:weight
 #' @seealso See \code{\link[dplyr]{sample}} for details on sample function.
 #' @examples
 #' g_sample_frac(airquality, Month, .3)

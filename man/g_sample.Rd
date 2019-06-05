@@ -15,7 +15,21 @@ g_sample_n(tbl, group, ...)
 
 \item{group}{grouping variable}
 
-\item{...}{@inheritParams dplyr::sample_frac}
+\item{...}{Arguments passed on to \code{dplyr::sample_frac}
+\describe{
+  \item{size}{For \code{sample_n()}, the number of rows to select.
+For \code{sample_frac()}, the fraction of rows to select.
+If \code{tbl} is grouped, \code{size} applies to each group.}
+  \item{replace}{Sample with or without replacement?}
+  \item{weight}{Sampling weights. This must evaluate to a vector of
+non-negative numbers the same length as the input. Weights are
+automatically standardised to sum to 1.
+
+This argument is automatically \link[rlang:quo]{quoted} and later
+\link[rlang:eval_tidy]{evaluated} in the context of the data
+frame. It supports \link[rlang:quasiquotation]{unquoting}. See
+\code{vignette("programming")} for an introduction to these concepts.}
+}}
 }
 \description{
 using group_by with sample returns a sample of the observations

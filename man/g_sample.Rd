@@ -15,7 +15,7 @@ g_sample_n(tbl, group, ...)
 
 \item{group}{grouping variable}
 
-\item{...}{ignored}
+\item{...}{@inheritParams dplyr::sample_frac}
 }
 \description{
 using group_by with sample returns a sample of the observations
@@ -27,5 +27,5 @@ g_sample_frac(airquality, Month, .3)
 g_sample_n(airquality, Month, 3)
 }
 \seealso{
-\code{\link[dplyr]{sample}}
+See \code{\link[dplyr]{sample}} for details on sample function.
 }

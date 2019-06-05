@@ -8,8 +8,9 @@
 #'
 #' @param tbl tbl of data
 #' @param group grouping variable
-#' @inheritParams dplyr::sample
-#' @seealso \code{\link[dplyr]{sample}}
+#' @param ...
+#'  @inheritParams dplyr::sample_frac
+#' @seealso See \code{\link[dplyr]{sample}} for details on sample function.
 #' @examples
 #' g_sample_frac(airquality, Month, .3)
 #' g_sample_n(airquality, Month, 3)

@@ -1,5 +1,5 @@
 # extenstions to summarize for looking at whole datasets quickly
-utils::globalVariables(c("pct_na", "mean"))
+utils::globalVariables(c("pct_na", "mean", "value"))
 
 #' Summary of NA by variable
 #'
@@ -101,4 +101,42 @@ summarize_mean <- function(df, group = NULL, round = NULL, na.rm = TRUE) {
   }
 
   return(mean)
+}
+
+
+#' mean, sd, min, max of variables
+#'
+#' @name summarize_stats
+#' @description returns the mean, sd, min and max of a list of variables. By default
+#' passes na.rm = TRUE. Respects grouping of input data.
+#'
+#' @param tbl A tbl
+#' @param ... variables to summarize
+#' @param na.rm  logical value indicating whether NA values should be stripped
+#' before the computation proceeds. Default is TRUE
+#' @return a long table with one row per variable. Columns are variable, mean, sd,
+#' min and max.
+#' @details This function respects grouping. If the tbl is grouped, the output
+#' will be as well.
+#' @export
+#'
+#' @examples
+#' summarize_stats(airquality, Ozone, Solar.R, Wind, Temp)
+#' summarize_stats(airquality %>% dplyr::group_by(Month), Ozone, Solar.R, Wind, Temp)
+summarize_stats <- function(tbl, ..., na.rm = TRUE) {
+  vars <- rlang::enquos(...)
+
+  if (dplyr::is_grouped_df(tbl)) {
+    groups <- dplyr::group_vars(tbl)
+    groups <- c("variable", groups)
+  } else groups <- "variable"
+
+  tbl %>%
+    tidyr::gather(key = "variable", value = "value", !!! vars) %>%
+    dplyr::group_by(.dots = groups) %>%
+    dplyr::summarize(
+      mean = base::mean(value, na.rm = !!na.rm),
+      sd   =  stats::sd(value, na.rm = !!na.rm),
+      min  =  base::min(value, na.rm = !!na.rm),
+      max  =  base::max(value, na.rm = !!na.rm))
 }

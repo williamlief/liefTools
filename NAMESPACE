@@ -3,6 +3,7 @@
 export("%>%")
 export(balance_panel)
 export(check_vars_exist)
+export(dummify)
 export(g_sample_frac)
 export(g_sample_n)
 export(summarize_mean)

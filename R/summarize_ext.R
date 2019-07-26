@@ -140,3 +140,65 @@ summarize_stats <- function(tbl, ..., na.rm = TRUE) {
       min  =  base::min(value, na.rm = !!na.rm),
       max  =  base::max(value, na.rm = !!na.rm))
 }
+
+#' multi-level summarize function
+#'
+#' @name summarize_multi
+#' @description This function is used identically to dplyr::summarize. However,
+#'   it applies the grouping variables of .data additively and returns summary
+#'   values at each level. The returned dataset contains an additional variable
+#'   'level' that tracks the number of grouping variables applied. Note that the
+#'   function additively applies grouping variables in the order that they were
+#'   originally specified. It does not do combinations of levels. In other
+#'   words, a dataset with three grouping variables, 'a', 'b', and 'c', would
+#'   return level 0: ungroup(), level 1: group_by('a'), level 2: group_by ('a',
+#'   'b') and level 3: group_by('a', 'b', 'c')
+#'
+#' @note by default this function creates a variable called "level_" that tracks
+#'   the levels of the groupings. If this conflicts with your dataset it can be
+#'   renamed using the level parameter.
+#'
+#' @param .data the data frame to be summarised
+#' @param ... further arguments of the form var = value
+#' @param level name of created variable tracking summary levels. Default is 'level_'
+#'
+#' @export
+#'
+#' @examples
+#' summarize_multi(iris, mean_sepal = mean(Sepal.Length))
+#' summarize_multi(iris %>% dplyr::group_by(Species), mean_sepal = mean(Sepal.Length))
+#' summarize_multi(iris %>% dplyr::group_by(Species, Petal.Width), mean_sepal = mean(Sepal.Length))
+#' @importFrom rlang :=
+summarize_multi <- function(.data, ... , level = "level_") {
+
+  level = rlang::enquo(level)
+
+  df <- .data %>%
+    dplyr::ungroup() %>%
+    dplyr::summarize(...) %>%
+    dplyr::mutate(!!level := 0) %>%
+    dplyr::select(!!level, dplyr::everything())
+
+  if (dplyr::is_grouped_df(.data)) {
+
+    groups <- dplyr::group_vars(.data)
+    list <- c()
+
+    for(i in 1:length(groups)) {
+      list[[i]] <- .data %>%
+        dplyr::group_by_at(dplyr::vars(dplyr::one_of(groups[1:i]))) %>%
+        dplyr::summarize(...) %>%
+        dplyr::mutate(!!level := i) %>%
+        dplyr::ungroup()
+    }
+
+    df <- df %>%
+      dplyr::bind_rows(list) %>%
+      dplyr::select(!!level, groups, dplyr::everything())
+  }
+
+  return(df)
+}
+
+
+

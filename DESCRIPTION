@@ -13,4 +13,6 @@ Imports:
     dplyr,
     rlang,
     tidyr,
-    magrittr
+    magrittr,
+    purrr,
+    readxl
